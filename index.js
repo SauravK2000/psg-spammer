@@ -79,3 +79,92 @@ const submitResponse = async(formID, answers) => {
 
     return await fetch(url, opts);
 };
+
+function randomString(lenString) {
+    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+    var randomstring = '';
+
+    for (var i = 0; i < lenString; i++) {
+        var rnum = Math.floor(Math.random() * characters.length);
+        randomstring += characters.substring(rnum, rnum + 1);
+    }
+    return randomstring;
+}
+
+const fetchAndProcessData = async(url) => {
+    try {
+        const res = await fetch(url).then(function(response) {
+                return response.text();
+            }).then((htmlStr) => {
+
+                const data = JSON.parse(
+                    htmlStr.split("var FB_PUBLIC_LOAD_DATA_ = ")[1].split(";")[0]
+                );
+                const formID = data[14].split("/")[1];
+                const formName = data[3];
+                const questions = data[1][1];
+
+                return [formID, formName, questions];
+            })
+            .catch((err) => {
+                console.warn('Something went wrong.', err);
+            });
+        return res;
+
+    } catch (err) {
+        console.log(err);
+        return err.message;
+    }
+};
+
+const genrateRandomAnswers = async (questions) => {
+    const answers = [];
+    for (var i = 0; i < questions.length; i++) {
+        //text based
+        if (questions[i][3] === 0 || questions[i][3] === 1) {
+            answers.push([questions[i][4][0][0], randomString(10) + " " + randomString(10)]);
+        }
+        // option based
+        else if (questions[i][3] === 2 || questions[i][3] === 3 || questions[i][3] === 4) {
+            const optionsArray = questions[i][4][0][1];
+            const option =
+                optionsArray[Math.floor(Math.random() * optionsArray.length)];
+            answers.push([questions[i][4][0][0], option[0]]);
+        }
+    }
+    return answers;
+}
+
+const genrateAnswers = async(questions) => {
+    const answers = [];
+    for (var i = 0; i < questions.length; i++) {
+        if (questions[i][3] === 0 || questions[i][3] === 1) {
+            if(questions[i][1].toLowerCase().includes('name')){
+                let res = await fetch("https://getindianname.herokuapp.com/getName").then(function(response) {
+                    return response.text();
+                })
+                answers.push([questions[i][4][0][0],res]);
+            }
+            else if(questions[i][1].toLowerCase().includes('roll')){
+                let roll = await fetch("https://getindianname.herokuapp.com/getRollNo").then(function(response) {
+                    return response.text();
+                })
+                answers.push([questions[i][4][0][0],roll]);
+            }
+            else{
+                let sentence = await fetch("https://getindianname.herokuapp.com/getSentence").then(function(response) {
+                    return response.text();
+                })
+                answers.push([questions[i][4][0][0], sentence]);
+            }
+        }
+        // option based
+        else if (questions[i][3] === 2 || questions[i][3] === 3 || questions[i][3] === 4) {
+            const optionsArray = questions[i][4][0][1];
+            const option =
+                optionsArray[Math.floor(Math.random() * optionsArray.length)];
+            answers.push([questions[i][4][0][0], option[0]]);
+        }
+    }
+    return answers;
+};
