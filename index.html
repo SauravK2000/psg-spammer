@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Form Spammer</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="index.css"></link>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1" style="margin-left: auto; margin-right: auto;">PG Spammer</span>
+        </div>
+    </nav>
+    <div class="container" style="margin:3rem">
+        <div class="input-group">
+            <input class="form-control" type="text" placeholder="Enter Google Form Link" name="url" id="url" />
+            <button class="btn btn-primary" id="submit" type="submit">Submit</button>
+        </div>
+        <div style="margin-top: 1.4rem;display: flex;">
+            <span style="margin-right: 1.3rem;">Randomize:</span>            
+            <div class="material-switch pull-right">
+                <input id="randomize" name="randomize" type="checkbox"/>
+                <label for="randomize" class="label-primary"></label>
+            </div>
+        </div>
+        
+        <div id="formInfo" class="mt-3 mb-1">
+            <div id="formName"></div>
+            <div id="formQues"></div>
+        </div>
+        <div id="spamcount" class="input-group mt-4" style="display:none">
+            <input class="form-control" type="number" name="spamCount" id="spamCountNumber" placeholder="spam count" />
+            <button class="btn btn-primary" id="spam" name="spam" type="button">spam</button>
+        </div>
+        <div class="progress" style="display:none;width:50%;margin-left: auto;margin-right: auto;margin-top: 1rem;" id="progress_bar">
+            <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0%;height: 100%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    </div>
+    <script src="./index.js"></script>
+</body>
+
+</html>
